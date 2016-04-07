@@ -34,26 +34,17 @@ void setup() {
 }
 
 void loop() {
-  if (Serial.available() > 0) {
-    // ASCII '0' through '9' characters are
-    // represented by the values 48 through 57.
-    // so if the user types a number from 0 through 9 in ASCII, 
-    // you can subtract 48 to get the actual value:
-    int bitToSet = Serial.read() - 48;
-
-  // write to the shift register with the correct bit set high:
-    registerWrite(bitToSet, HIGH);
-  }
+  multiplex();
 }
 
 // This method sends bits to the shift register:
 
 void registerWrite(int whichPin, int whichState) {
 // the bits you want to send
-  byte register00 = 0b11111101;
-  byte register0 = 0b00000111;
-  byte register1 = 0b00001011;
-  byte register2 = 0b00000101;
+  byte register1 = 0b10000001;
+  byte register2 = 0b01111110;
+  byte register3 = 0b11111111;
+  byte register4 = 0b11111111;
 
   // turn off the output so the pins don't light up
   // while you're shifting bits:
@@ -63,13 +54,14 @@ void registerWrite(int whichPin, int whichState) {
   // turn on the next highest bit in bitsToSend:
   //bitWrite(bitsToSend, whichPin, whichState);
   // shift the bits out:
- shiftOut(dataPin2, clockPin2, MSBFIRST, register2);
- shiftOut(dataPin2, clockPin2, MSBFIRST, register1);
- shiftOut(dataPin, clockPin, MSBFIRST, register0);
-  shiftOut(dataPin, clockPin, MSBFIRST, register00);
+   shiftOut(dataPin, clockPin, MSBFIRST, register1);
+  shiftOut(dataPin, clockPin, MSBFIRST, register2);
+ shiftOut(dataPin2, clockPin2, MSBFIRST, register3);
+ shiftOut(dataPin2, clockPin2, MSBFIRST, register4);
+
   
     // turn on the output so the LEDs can light up:
-     digitalWrite(latchPin, HIGH);
+   digitalWrite(latchPin, HIGH);
    digitalWrite(latchPin2, HIGH);
  
   
@@ -88,6 +80,41 @@ byte calculateByte(bool bits[8]){
 
   return (byte)totalByte;
 }
+
+void multiplex(){
+  Row rows[8] = {
+    //base new Row(0b11111111, 0b11111111, 0b00001111, 0b11110000), 
+    new Row(0b11111111, 0b11111111, 0b00001111, 0b11110000), 
+    new Row(0b10000001, 0b01111110, 0b11111111, 0b11111111), 
+  }
+
+  
+  for (int i = 0; i < 8; i ++){
+  
+    
+  }
+}
+
+//Row object holds byte data for each row
+class Row 
+{
+  byte  r1;
+  byte  r2;
+  byte  r3;
+  byte  r4;
+
+  public:
+  Row (byte r1, byte  r2, byte  r3, byte  r4){
+    this->r1 = r1;
+    this->r2 = r2;
+    this->r3 = r3;
+    this-> r4 = r4;
+  }
+};
+
+
+
+
 
 
 

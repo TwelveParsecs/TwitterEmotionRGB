@@ -1,10 +1,10 @@
 
 
-//Pin connected to latch pin (ST_CP) of 74HC595
+//Pin connected to latch pin (ST_CP)
 const int latchPin = 8;
-//Pin connected to clock pin (SH_CP) of 74HC595
+//Pin connected to clock pin (SH_CP) 
 const int clockPin = 12;
-////Pin connected to Data in (DS) of 74HC595
+////Pin connected to Data in (DS) 
 const int dataPin = 11;
 
 const int latchPin2 = 2;
@@ -50,26 +50,29 @@ void loop() {
 
 void registerWrite(int whichPin, int whichState) {
 // the bits you want to send
-byte register00 = 0b00000000;
-byte register0 = 0b00000000;
-  byte register1 = 0b00001111;
-  byte register2 = 0b11111101;
+  byte register00 = 0b11111101;
+  byte register0 = 0b00000111;
+  byte register1 = 0b00001011;
+  byte register2 = 0b00000101;
 
   // turn off the output so the pins don't light up
   // while you're shifting bits:
   digitalWrite(latchPin, LOW);
+  digitalWrite(latchPin2, LOW);
 
   // turn on the next highest bit in bitsToSend:
   //bitWrite(bitsToSend, whichPin, whichState);
-  //Serial.print (bitsToSend);
   // shift the bits out:
-  shiftOut(dataPin, clockPin, MSBFIRST, register2);
-  shiftOut(dataPin, clockPin, MSBFIRST, register1);
+ shiftOut(dataPin2, clockPin2, MSBFIRST, register2);
+ shiftOut(dataPin2, clockPin2, MSBFIRST, register1);
  shiftOut(dataPin, clockPin, MSBFIRST, register0);
   shiftOut(dataPin, clockPin, MSBFIRST, register00);
   
     // turn on the output so the LEDs can light up:
-  digitalWrite(latchPin, HIGH);
+     digitalWrite(latchPin, HIGH);
+   digitalWrite(latchPin2, HIGH);
+ 
+  
 
 }
 

@@ -1,4 +1,4 @@
-
+#include "Row.h"
 
 //Pin connected to latch pin (ST_CP)
 const int latchPin = 8;
@@ -10,6 +10,19 @@ const int dataPin = 11;
 const int latchPin2 = 2;
 const int clockPin2 = 4;
 const int dataPin2 = 3;
+
+
+Row *rows[8] = {
+    //base new Row(0b11111111, 0b11111111, 0b00001111, 0b11110000), 
+    new Row(0b00000000, 0b11111111, 0b10001111, 0b11110000), 
+    new Row(0b00000000, 0b11111111, 0b01001111, 0b11110000), 
+    new Row(0b00000000, 0b11111111, 0b00101111, 0b11110000), 
+    new Row(0b00000000, 0b11111111, 0b00011111, 0b11110000), 
+    new Row(0b00000000, 0b11111111, 0b10001111, 0b11110000), 
+    new Row(0b00000000, 0b11111111, 0b01001111, 0b11110000), 
+    new Row(0b00000000, 0b11111111, 0b00101111, 0b11110000), 
+    new Row(0b00000000, 0b11111111, 0b00011111, 0b11110000), 
+  };
 
 
 //Array holding value for each bit
@@ -29,22 +42,20 @@ void setup() {
 
   for (int i = 0; i < 32; i++){
     output[i]=false;    
-  }
-  registerWrite(0, HIGH);
+  }  
 }
 
 void loop() {
-  multiplex();
+  for (int i = 0; i < 8; i ++){
+    registerWrite(*rows[i]);  
+  }
 }
 
 // This method sends bits to the shift register:
 
-void registerWrite(int whichPin, int whichState) {
+void registerWrite(Row row) {
 // the bits you want to send
-  byte register1 = 0b10000001;
-  byte register2 = 0b01111110;
-  byte register3 = 0b11111111;
-  byte register4 = 0b11111111;
+
 
   // turn off the output so the pins don't light up
   // while you're shifting bits:
@@ -54,18 +65,15 @@ void registerWrite(int whichPin, int whichState) {
   // turn on the next highest bit in bitsToSend:
   //bitWrite(bitsToSend, whichPin, whichState);
   // shift the bits out:
-   shiftOut(dataPin, clockPin, MSBFIRST, register1);
-  shiftOut(dataPin, clockPin, MSBFIRST, register2);
- shiftOut(dataPin2, clockPin2, MSBFIRST, register3);
- shiftOut(dataPin2, clockPin2, MSBFIRST, register4);
+  shiftOut(dataPin, clockPin, MSBFIRST, row.r1);
+  shiftOut(dataPin, clockPin, MSBFIRST, row.r2);
+  shiftOut(dataPin2, clockPin2, MSBFIRST, row.r3);
+  shiftOut(dataPin2, clockPin2, MSBFIRST, row.r4);
 
   
     // turn on the output so the LEDs can light up:
    digitalWrite(latchPin, HIGH);
    digitalWrite(latchPin2, HIGH);
- 
-  
-
 }
 
 byte calculateByte(bool bits[8]){
@@ -81,36 +89,7 @@ byte calculateByte(bool bits[8]){
   return (byte)totalByte;
 }
 
-void multiplex(){
-  Row rows[8] = {
-    //base new Row(0b11111111, 0b11111111, 0b00001111, 0b11110000), 
-    new Row(0b11111111, 0b11111111, 0b00001111, 0b11110000), 
-    new Row(0b10000001, 0b01111110, 0b11111111, 0b11111111), 
-  }
 
-  
-  for (int i = 0; i < 8; i ++){
-  
-    
-  }
-}
-
-//Row object holds byte data for each row
-class Row 
-{
-  byte  r1;
-  byte  r2;
-  byte  r3;
-  byte  r4;
-
-  public:
-  Row (byte r1, byte  r2, byte  r3, byte  r4){
-    this->r1 = r1;
-    this->r2 = r2;
-    this->r3 = r3;
-    this-> r4 = r4;
-  }
-};
 
 
 

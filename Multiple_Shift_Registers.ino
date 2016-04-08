@@ -98,15 +98,16 @@ void matrixUpdate(String imageString){
   int row = 1;
   char chars[imageString.length()+1]; 
   char currentChar;
+  int currentPos = 1;
+  char lastChar = 'b';
+  int currentRow[4] = {255,255,15,240};
 
   //convert string to array of chars
   imageString.toCharArray(chars, imageString.length()+1);
   
   for (int i = 0; i < sizeof(chars); i ++){
     
-   currentChar = chars[i];
-    
-    switch(currentChar){
+    switch(chars[i]){
       case '1':
       case '2':
       case '3':
@@ -115,14 +116,35 @@ void matrixUpdate(String imageString){
       case '6':
       case '7':
       case '8':
-        //convert char to the number it represents
-        row = currentChar - '0';
+        // Convert char to the number it represents
+        row = chars[i] - '0';
         break;
       case 'r':
+        // Check if this is a new position
+        if (lastChar == 'r' || lastChar =='g') currentPos +=1;
+        // Subtract from byte
+        currentRow[1] -= bitToInteger (currentPos);
         break;
       case 'g':
+        // Check if this is a new position
+        if (lastChar == 'r' || lastChar =='g') currentPos +=1;
+
+        // Pins for green LEDs are split between two bytes and reversed so it requires a 
+        // little extra logic to turn them on correctly.
+        if (currentPos <=4){
+          
+        }
+        else (
+
+         )
         break;
       case 'b':
+        currentPos +=1;
+        // Subtract from byte
+        currentRow[0] -= bitToInteger (currentPos);
+        break;
+      case '#':
+        currentPos = 0;
         break;
     }
   }
@@ -133,8 +155,7 @@ void matrixUpdate(String imageString){
  */
 int bitToInteger(int pos){
   int num = pow (2,8 - pos);
-  
-  return num
+  return num;
 }
 
 

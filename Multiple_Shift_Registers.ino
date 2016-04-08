@@ -11,17 +11,19 @@ const int latchPin2 = 2;
 const int clockPin2 = 4;
 const int dataPin2 = 3;
 
+String newImage;
+
 
 Row *rows[8] = {
     //base new Row(0b11111111, 0b11111111, 0b00001111, 0b11110000), 
-    new Row(0b00000000, 0b11111111, 0b10001111, 0b11110000), 
-    new Row(0b00000000, 0b11111111, 0b01001111, 0b11110000), 
-    new Row(0b00000000, 0b11111111, 0b00101111, 0b11110000), 
-    new Row(0b00000000, 0b11111111, 0b00011111, 0b11110000), 
-    new Row(0b00000000, 0b11111111, 0b10001111, 0b11110000), 
-    new Row(0b00000000, 0b11111111, 0b01001111, 0b11110000), 
-    new Row(0b00000000, 0b11111111, 0b00101111, 0b11110000), 
-    new Row(0b00000000, 0b11111111, 0b00011111, 0b11110000), 
+    new Row(0b11111111, 0b11111111, 0b00001111, 0b10110000), 
+    new Row(0b11111111, 0b11111111, 0b00001111, 0b11110000), 
+    new Row(0b11111111, 0b11111111, 0b00001111, 0b11110000), 
+    new Row(0b11111111, 0b11111111, 0b00001111, 0b11110000), 
+    new Row(0b11111111, 0b11111111, 0b00001111, 0b11110000), 
+    new Row(0b11111111, 0b11111111, 0b00001111, 0b11110000), 
+    new Row(0b11111111, 0b11111111, 0b00001111, 0b11110000), 
+    new Row(0b11111111, 0b11111111, 0b00001111, 0b11110000), 
   };
 
 
@@ -46,7 +48,21 @@ void setup() {
 }
 
 void loop() {
-  //iterate through rows
+    //Get updated rows through serial
+    if (Serial.available() > 0) {
+      char inByte = Serial.read();
+  
+      if (inByte != '#') {
+        newImage += inByte;
+      }
+      else {
+        matrixUpdate(newImage);
+        newImage="";
+      }
+    }
+
+  
+  //draw rows through rows
   for (int i = 0; i < 8; i ++){
     registerWrite(*rows[i]);  
   }
@@ -77,20 +93,49 @@ void registerWrite(Row row) {
    digitalWrite(latchPin2, HIGH);
 }
 
-byte calculateByte(bool bits[8]){
-  int lastBit = 128;
-  int totalByte = 0;
-  for (int i = 8; i > 0; i--){
-     if (bits[i]){
-      totalByte += lastBit;
-     }
-     lastBit/=2;
-  }
 
-  return (byte)totalByte;
+void matrixUpdate(String imageString){
+  int row = 1;
+  char chars[imageString.length()+1]; 
+  char currentChar;
+
+  //convert string to array of chars
+  imageString.toCharArray(chars, imageString.length()+1);
+  
+  for (int i = 0; i < sizeof(chars); i ++){
+    
+   currentChar = chars[i];
+    
+    switch(currentChar){
+      case '1':
+      case '2':
+      case '3':
+      case '4':
+      case '5':
+      case '6':
+      case '7':
+      case '8':
+        //convert char to the number it represents
+        row = currentChar - '0';
+        break;
+      case 'r':
+        break;
+      case 'g':
+        break;
+      case 'b':
+        break;
+    }
+  }
 }
 
-
+/*converts bit position to an integer
+ * ex: 00010000 = position 4 = 16
+ */
+int bitToInteger(int pos){
+  int num = pow (2,8 - pos);
+  
+  return num
+}
 
 
 

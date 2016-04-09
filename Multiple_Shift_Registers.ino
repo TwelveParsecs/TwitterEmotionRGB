@@ -160,7 +160,9 @@ void matrixUpdate(String imageString){
         lastChar = 'b';
         break;
       case 'x':
+      if (lastChar == 'r' || lastChar =='g') currentPos +=1;
        // Serial.println("Position " + String(currentPos) + " is null");
+       lastChar = 'x';
         currentPos +=1;
         break;
         

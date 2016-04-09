@@ -106,6 +106,7 @@ void matrixUpdate(String imageString){
   imageString.toCharArray(chars, imageString.length()+1);
   
   for (int i = 0; i < sizeof(chars); i ++){
+    int tempPos = 9 - currentPos; //create a reversed position for green pins
     
     switch(chars[i]){
       case '1':
@@ -131,19 +132,24 @@ void matrixUpdate(String imageString){
 
         // Pins for green LEDs are split between two bytes and reversed so it requires a 
         // little extra logic to turn them on correctly.
-        if (currentPos <=4){
-          
+        
+        if (tempPos >4){
+          currentRow[2] -= bitToInteger (tempPos);
         }
-        else (
-
-         )
+        else {
+          currentRow[3] -= bitToInteger (tempPos);
+        }
         break;
       case 'b':
         currentPos +=1;
         // Subtract from byte
         currentRow[0] -= bitToInteger (currentPos);
         break;
-      case '#':
+      case '-':
+        rows[row]->r1 = currentRow[0];
+        rows[row]->r2 = currentRow[1];
+        rows[row]->r3 = currentRow[2];
+        rows[row]->r4 = currentRow[3];
         currentPos = 0;
         break;
     }

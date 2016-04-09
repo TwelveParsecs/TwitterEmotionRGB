@@ -56,7 +56,7 @@ void loop() {
         newImage += inByte;
       }
       else {
-        matrixUpdate(newImage.substring(0,newImage.length()-1));
+        matrixUpdate(newImage.substring(0,newImage.length()));
         newImage="";
       }
     }
@@ -99,10 +99,10 @@ void matrixUpdate(String imageString){
   char chars[imageString.length()+1]; 
   int currentPos = 1;
   char lastChar = 'b';
-  int currentRow[4] = {0,255,15,240};
+  int currentRow[4] = {255,255,15,240};
 
   //convert string to array of chars
-  imageString.toCharArray(chars, imageString.length()-1);
+  imageString.toCharArray(chars, imageString.length()+1);
   
   for (int i = 0; i < sizeof(chars); i ++){
     int tempPos = 9 - currentPos; //create a reversed position for green pins
@@ -120,12 +120,12 @@ void matrixUpdate(String imageString){
         row = chars[i] - '0';
         Serial.println("The row is : " + String(row));
          if (row >4){
-          currentRow[3] += bitToInteger (row);
-          Serial.println("Row bit : " + String(row));
+          currentRow[3] += bitToInteger (row); //bitToInteger returns numbers 1 less than expected for some reason
+          Serial.println("Row bit : " + String( bitToInteger (row)));
         }
         else {
           currentRow[2] += bitToInteger (row);
-          Serial.println("Row bit : " + String(row));
+          Serial.println("Row bit : " + String( bitToInteger (row)));
         }
         
         break;
@@ -154,15 +154,16 @@ void matrixUpdate(String imageString){
         break;
       case 'b':
         // Subtract from byte
-        currentRow[0] += bitToInteger (currentPos);
-        Serial.println("Position " + String(currentPos) + " is blue");
+        currentRow[0] -= bitToInteger (currentPos);
+       // Serial.println("Position " + String(currentPos) + " is blue");
         currentPos +=1;
         lastChar = 'b';
         break;
       case 'x':
+       // Serial.println("Position " + String(currentPos) + " is null");
         currentPos +=1;
-        Serial.println("Position " + String(currentPos) + " is null");
         break;
+        
       case '*':
         rows[row-1]->r1 = currentRow[0];
         rows[row-1]->r2 = currentRow[1];
@@ -170,7 +171,7 @@ void matrixUpdate(String imageString){
         rows[row-1]->r4 = currentRow[3];
         Serial.println("Values : " + String(currentRow[2]));
         Serial.println("Displayed info");
-        currentPos = 0;
+        currentPos = 1;
         break;
      default :
       break;
@@ -182,7 +183,8 @@ void matrixUpdate(String imageString){
  * ex: 00010000 = position 4 = 16
  */
 int bitToInteger(int pos){
-  int num = pow (2,8 - pos);
+  int num = ceil(pow (2,8 - pos));
+  Serial.println("Position :" + String(pos) + "Number :" + String(num));
   return num;
 }
 

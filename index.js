@@ -32,25 +32,12 @@ var fs = require('fs'),
     PNG = require('pngjs').PNG;
 
 //load images
-loadImage("sadness1.png", "sadness");
-loadImage("image.png","joy");
-loadImage("image2.png","joy");
-loadImage("image3.png","joy");
+loadImage("anger.png", "anger");
 
-
-//loadImage("anger1.png","anger");
-loadImage("anger2.png", "anger");
-loadImage("anger3.png", "anger");
-loadImage("sadness2.png", "sadness");
-loadImage("fear1.png", "fear");
-loadImage("sadness3.png", "sadness");
-loadImage("fear2.png", "fear");
-loadImage("sadness4.png", "sadness");
-loadImage("disgust1.png", "disgust");
 //loadImage("disgust2.png", "disgust");
 
 //Get emotion from Twitter feed
-getTwitter();
+//getTwitter();
 
 
 myPort.on("open", function () {
@@ -69,10 +56,12 @@ myPort.on("open", function () {
 
 				//check that an emotion has been set
 				console.log("started looping");
+				emotion = anger; //REMOVE LATER//
 				console.log(emotion);
+
 				if (emotion != ""){
 					//display frames from current emotion
-					
+
 					if (emotion == "anger")imageArray = angerArray;
 					else if (emotion == "disgust")imageArray = disgustArray;
 					else if (emotion == "fear")imageArray = fearArray;
@@ -111,21 +100,41 @@ function loadImage(img,emotion){
 	        filterType: 4
 	    }))
 	    .on('parsed', function() {
-					imageCommand = ""
+					imageCommand = "";
 	        for (var y = 0; y < this.height; y++) {
+							// Add row number
+							imageCommand += y+1;
 	            for (var x = 0; x < this.width; x++) {
 	                var idx = (this.width * y + x) << 2;
+									var empty = true; // Whether any colours are actually present
 
-	                //fill array with on/off values
+	                // Fill array with color values
 	                if (this.data[idx]==255){
-										//add to command
-										imageCommand += "1";
+										// Add to command
+										imageCommand += "r";
+										empty = false;
 	                }
-	                else {
-										//add to command
-										imageCommand += "0";
+									if (this.data[idx+1]==255){
+										// Add to command
+										imageCommand += "g";
+										empty = false;
 	                }
+									if (this.data[idx+2]==255){
+										// Add to command
+										imageCommand += "b";
+										empty = false;
+	                }
+
+	                if (empty) {
+										// Add to command
+										imageCommand += "x";
+	                }
+
+									// Add delimiter
+									imageCommand +="-";
 	            }
+							// Add line ending
+							image +="*";
 	        }
 					//Arduino will read number sign as end of serial data.
 					imageCommand += "#";

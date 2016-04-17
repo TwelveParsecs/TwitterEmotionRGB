@@ -138,16 +138,16 @@ void matrixUpdate(String imageString){
         break;
       case 'g':
         // Check if this is a new position
-        if (lastChar == 'r' || lastChar =='g') currentPos +=1;
+        
 
         // Pins for green LEDs are split between two bytes and reversed so it requires a 
         // little extra logic to turn them on correctly.
         
         if (tempPos >4){
-          currentRow[2] -= bitToInteger (tempPos);
+          currentRow[3] -= bitToInteger (tempPos-4);
         }
         else {
-          currentRow[3] -= bitToInteger (tempPos);
+          currentRow[2] -= bitToInteger (tempPos+4);
         }
 
         lastChar = 'g';

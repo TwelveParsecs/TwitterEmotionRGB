@@ -131,7 +131,7 @@ void matrixUpdate(String imageString){
         break;
       case 'r':
         // Check if this is a new position
-        if (lastChar == 'r' || lastChar =='g') currentPos +=1;
+   
         // Subtract from byte
         currentRow[1] -= bitToInteger (currentPos);
         lastChar = 'r';
@@ -156,14 +156,16 @@ void matrixUpdate(String imageString){
         // Subtract from byte
         currentRow[0] -= bitToInteger (currentPos);
        // Serial.println("Position " + String(currentPos) + " is blue");
-        currentPos +=1;
+        
         lastChar = 'b';
         break;
       case 'x':
       if (lastChar == 'r' || lastChar =='g') currentPos +=1;
        // Serial.println("Position " + String(currentPos) + " is null");
        lastChar = 'x';
-        currentPos +=1;
+        break;
+      case '-':
+        currentPos += 1;
         break;
         
       case '*':

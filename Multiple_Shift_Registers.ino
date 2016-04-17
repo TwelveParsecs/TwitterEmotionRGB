@@ -56,10 +56,7 @@ void loop() {
         newImage += inByte;
       }
       else {
-        for (int i = 0; i < 8; i ++){
-          rows[i] = new Row(0b11111111, 0b11111111, 0b00001111, 0b11110000); 
-        }
-        
+
 
         matrixUpdate(newImage.substring(0,newImage.length()));
         newImage="";

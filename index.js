@@ -80,7 +80,7 @@ myPort.on("open", function () {
 							timeElapsed = 0;
 					}
 				}
-			},2000);
+			},200);
 	},2000);
 });
 
@@ -99,9 +99,10 @@ function loadImage(img,emotion){
 	        filterType: 4
 	    }))
 	    .on('parsed', function() {
-					imageCommand = "";
+
 	        for (var y = 0; y < this.height; y++) {
 							// Add row number
+							imageCommand = "";
 							imageCommand += y+1;
 	            for (var x = 0; x < this.width; x++) {
 	                var idx = (this.width * y + x) << 2;
@@ -133,30 +134,30 @@ function loadImage(img,emotion){
 									imageCommand +="-";
 	            }
 							// Add line ending
-							imageCommand +="*";
+							imageCommand +="*#";
+							switch(emotion){
+								case "anger":
+									angerArray.push(imageCommand);
+									break;
+								case "disgust":
+									disgustArray.push(imageCommand);
+									break;
+								case "fear":
+									fearArray.push(imageCommand);
+									break;
+								case "joy":
+									joyArray.push(imageCommand);
+									break;
+								case "sadness":
+									sadnessArray.push(imageCommand);
+									break;
+							}
 	        }
 					//Arduino will read number sign as end of serial data.
-					imageCommand += "#";
+
 					console.log(imageCommand);
 					//add data to matching array
-					switch(emotion){
-						case "anger":
-							angerArray.push(imageCommand);
-							break;
-						case "disgust":
-							disgustArray.push(imageCommand);
-							break;
-						case "fear":
-							fearArray.push(imageCommand);
-							break;
-						case "joy":
-							joyArray.push(imageCommand);
-							break;
-						case "sadness":
-							sadnessArray.push(imageCommand);
-							break;
 
-					}
 			});
 }
 

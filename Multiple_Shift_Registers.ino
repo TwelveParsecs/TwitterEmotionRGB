@@ -56,6 +56,11 @@ void loop() {
         newImage += inByte;
       }
       else {
+        for (int i = 0; i < 8; i ++){
+          rows[i] = new Row(0b11111111, 0b11111111, 0b00001111, 0b11110000); 
+        }
+        
+
         matrixUpdate(newImage.substring(0,newImage.length()));
         newImage="";
       }
@@ -106,7 +111,7 @@ void matrixUpdate(String imageString){
   
   for (int i = 0; i < sizeof(chars); i ++){
     int tempPos = 9 - currentPos; //create a reversed position for green pins
-    Serial.println(i);
+    //Serial.println(i);
     switch(chars[i]){
       case '1':
       case '2':
@@ -118,14 +123,14 @@ void matrixUpdate(String imageString){
       case '8':
         // Convert char to the number it represents
         row = chars[i] - '0';
-        Serial.println("The row is : " + String(row));
+        //Serial.println("The row is : " + String(row));
          if (row >4){
           currentRow[3] += bitToInteger (row); //bitToInteger returns numbers 1 less than expected for some reason
-          Serial.println("Row bit : " + String( bitToInteger (row)));
+          //Serial.println("Row bit : " + String( bitToInteger (row)));
         }
         else {
           currentRow[2] += bitToInteger (row);
-          Serial.println("Row bit : " + String( bitToInteger (row)));
+         // Serial.println("Row bit : " + String( bitToInteger (row)));
         }
         
         break;
@@ -173,8 +178,8 @@ void matrixUpdate(String imageString){
         rows[row-1]->r2 = currentRow[1];
         rows[row-1]->r3 = currentRow[2];
         rows[row-1]->r4 = currentRow[3];
-        Serial.println("Values : " + String(currentRow[2]));
-        Serial.println("Displayed info");
+        //Serial.println("Values : " + String(currentRow[2]));
+       // Serial.println("Displayed info");
         currentPos = 1;
         break;
      default :
@@ -188,7 +193,7 @@ void matrixUpdate(String imageString){
  */
 int bitToInteger(int pos){
   int num = ceil(pow (2,8 - pos));
-  Serial.println("Position :" + String(pos) + "Number :" + String(num));
+  //Serial.println("Position :" + String(pos) + "Number :" + String(num));
   return num;
 }
 

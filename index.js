@@ -55,13 +55,12 @@ myPort.on("open", function () {
 			setInterval(function(){
 
 				//check that an emotion has been set
-				console.log("started looping");
-				emotion = anger; //REMOVE LATER//
-				console.log(emotion);
+				//console.log("started looping");
+				emotion = "anger"; //REMOVE LATER//
+				//console.log(emotion);
 
 				if (emotion != ""){
 					//display frames from current emotion
-
 					if (emotion == "anger")imageArray = angerArray;
 					else if (emotion == "disgust")imageArray = disgustArray;
 					else if (emotion == "fear")imageArray = fearArray;
@@ -81,7 +80,7 @@ myPort.on("open", function () {
 							timeElapsed = 0;
 					}
 				}
-			},600);
+			},2000);
 	},2000);
 });
 
@@ -134,11 +133,11 @@ function loadImage(img,emotion){
 									imageCommand +="-";
 	            }
 							// Add line ending
-							image +="*";
+							imageCommand +="*";
 	        }
 					//Arduino will read number sign as end of serial data.
 					imageCommand += "#";
-
+					console.log(imageCommand);
 					//add data to matching array
 					switch(emotion){
 						case "anger":

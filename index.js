@@ -1,3 +1,4 @@
+
 //Twitter and Alchemy APIs
 var watson = require('watson-developer-cloud');
 var Twitter = require('twitter');
@@ -32,7 +33,7 @@ var fs = require('fs'),
     PNG = require('pngjs').PNG;
 
 //load images
-loadImage("anger.png", "anger");
+loadImage("icons/sad12.png", "anger");
 
 //loadImage("disgust2.png", "disgust");
 
@@ -76,7 +77,7 @@ myPort.on("open", function () {
 
 					//if 2 minutes have passed, check Twitter again
 					if (timeElapsed > 120000){
-							getTwitter();
+							//getTwitter();
 							timeElapsed = 0;
 					}
 				}
@@ -152,10 +153,11 @@ function loadImage(img,emotion){
 									sadnessArray.push(imageCommand);
 									break;
 							}
+              console.log(imageCommand);
 	        }
 					//Arduino will read number sign as end of serial data.
 
-					console.log(imageCommand);
+
 					//add data to matching array
 
 			});

@@ -11,7 +11,34 @@ const int latchPin2 = 2;
 const int clockPin2 = 4;
 const int dataPin2 = 3;
 
+unsigned long startTime;
+
+
 String newImage;
+
+String sad1[8] = {
+    "1x-x-b-b-b-x-x-x-*",
+    "2x-b-b-b-b-b-b-x-*",
+    "3b-b-b-b-b-b-b-b-*",
+    "4b-b-b-b-b-b-b-b-*",
+    "5x-gb-x-b-x-gb-x-x-",
+    "6x-x-b-x-b-x-b-x-*",
+    "7x-x-x-gb-x-gb-x-gb-*",
+    "8x-x-x-x-b-x-b-x-*"
+  };
+
+
+  
+String sad2[8] = {
+  "1x-x-b-b-b-x-x-x-*",
+  "2x-b-b-b-b-b-b-x-*",
+  "3b-b-b-b-b-b-b-b-*",
+  "4b-b-b-b-b-b-b-b-*",
+  "5x-gb-x-b-x-gb-x-x-*",
+  "6x-x-b-x-b-x-b-x-*",
+  "7gb-x-gb-x-gb-x-x-x-*",
+  "8x-b-x-b-x-x-x-x-*"};
+
 
 
 Row *rows[8] = {
@@ -45,10 +72,13 @@ void setup() {
   for (int i = 0; i < 32; i++){
     output[i]=false;    
   }  
+
+  startTime = millis();
 }
 
 void loop() {
     //Get updated rows through serial
+    /*
     if (Serial.available() > 0) {
       char inByte = Serial.read();
   
@@ -61,13 +91,28 @@ void loop() {
         matrixUpdate(newImage.substring(0,newImage.length()));
         newImage="";
       }
+    }*/
+  if (millis() - startTime < 200){
+    for (int i = 0; i < 8; i ++){
+      matrixUpdate(sad1[i]);  
     }
+  }
+  else if (millis() - startTime < 400){
+     for (int i = 0; i < 8; i ++){
+      matrixUpdate(sad2[i]);  
+    }
+  }
+  else {
+    startTime = millis();
+  }
+  
 
   
   //draw rows through rows
   for (int i = 0; i < 8; i ++){
     registerWrite(*rows[i]);  
   }
+
 }
 
 // This method sends bits to the shift register:

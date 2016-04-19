@@ -33,7 +33,7 @@ var fs = require('fs'),
     PNG = require('pngjs').PNG;
 
 //load images
-loadImage("icons/sad11.png", "anger");
+loadImage("icons/disgust2.png", "anger");
 
 //loadImage("disgust2.png", "disgust");
 

@@ -13,53 +13,37 @@ const int dataPin2 = 3;
 const int interval = 200;// >illiseconds between each frame
 unsigned long startTime;
 
-String emotion = "sadness";
+String emotion = "anger";
 int frames = 2;
 int currentFrame = 1;
 
 String newImage;
-/*
-String sadness[2][8]= {
-  {
-    "1x-x-b-b-b-x-x-x-*",
-    "2x-b-b-b-b-b-b-x-*",
-    "3b-b-b-b-b-b-b-b-*",
-    "4b-b-b-b-b-b-b-b-*",
-    "5x-gb-x-b-x-gb-x-x-",
-    "6x-x-b-x-b-x-b-x-*",
-    "7x-x-x-gb-x-gb-x-gb-*",
-    "8x-x-x-x-b-x-b-x-*"
-  },
-  {
-    "1x-x-b-b-b-x-x-x-*",
-    "2x-b-b-b-b-b-b-x-*",
-    "3b-b-b-b-b-b-b-b-*",
-    "4b-b-b-b-b-b-b-b-*",
-    "5x-gb-x-b-x-gb-x-x-*",
-    "6x-x-b-x-b-x-b-x-*",
-    "7gb-x-gb-x-gb-x-x-x-*",
-    "8x-b-x-b-x-x-x-x-*"
-   }
-};
-*/
-String sadness[2] {
-  "1x-x-b-b-b-x-x-x-*2x-b-b-b-b-b-b-x-*3b-b-b-b-b-b-b-b-*4b-b-b-b-b-b-b-b-*5x-gb-x-b-x-gb-x-x-*6x-x-b-x-b-x-b-x-*7x-x-x-gb-x-gb-x-gb-*8x-x-x-x-b-x-b-x-*",
-  "1x-x-x-b-b-b-x-x-*2x-b-b-b-b-b-b-x-*3b-b-b-b-b-b-b-b-*4b-b-b-b-b-b-b-b-*5x-x-gb-x-b-x-gb-x-*6x-b-x-b-x-b-x-x-*7gb-x-gb-x-gb-x-x-x-*8x-b-x-b-x-x-x-x-*"
+
+String sadness[2] = {
+  "1x-x-b-b-b-x-x-x-*2x-b-b-b-b-b-b-x-*3b-b-b-b-b-b-b-b-*4b-b-b-b-b-b-b-b-*5x-x-x-b-x-x-x-x-*6x-x-b-x-x-x-b-x-*7x-x-x-x-x-gb-x-x-*8x-x-x-x-b-x-x-x-*",
+  "1x-x-b-b-b-x-x-x-*2x-b-b-b-b-b-b-x-*3b-b-b-b-b-b-b-b-*4b-b-b-b-b-b-b-b-*5x-b-x-x-x-b-x-x-*6x-x-x-x-gb-x-x-x-*7x-x-x-b-x-x-x-b-*8x-x-x-x-x-x-gb-x-*"
 };
 
 
-
-
-
-
-
-
-
-
-
-
-
-
+//String anger[2] = {
+//  "1x-x-x-x-r-x-x-x-*2x-x-x-x-r-r-x-x-*3x-x-x-r-r-r-r-x-*4x-x-r-r-r-r-x-x-*5x-r-r-rg-r-x-x-x-*6x-r-rg-rg-rg-r-x-x-*7r-rg-rg-rg-rg-rg-r-x-*8x-r-rg-rg-rg-r-x-x-*",
+//  "1x-x-x-x-r-x-x-x-*2x-x-x-x-r-r-x-x-*3x-x-x-r-r-r-r-x-*4x-x-r-r-r-r-x-x-*5x-r-r-rg-r-x-x-x-*6x-r-rg-rg-rg-r-x-x-*7r-rg-rg-rg-rg-rg-r-x-*8x-r-rg-rg-rg-r-x-x-*"
+//};
+//
+//String disgust[2] = {
+//  "1x-x-x-x-x-x-x-x-*2x-gb-gb-rg-rg-rg-rg-rg-*3x-gb-gb-rg-rg-rg-rg-rg-*4x-gb-gb-rg-rg-rg-rg-rg-*5x-gb-b-rg-rg-rg-rg-rg-*6x-x-x-rg-rg-rg-rg-rg-*7x-x-x-rg-rg-x-x-x-*8x-x-x-rg-rg-x-x-x-*",
+//  "1x-gb-gb-rg-rg-rg-rg-rg-*2x-gb-gb-rg-rg-rg-rg-rg-*3x-gb-gb-rg-rg-rg-rg-rg-*4x-gb-b-rg-rg-rg-rg-rg-*5x-x-x-rg-rg-rg-rg-rg-*6x-x-x-rg-rg-x-x-x-*7x-x-x-rg-rg-x-x-x-*8x-x-x-x-x-x-x-x-*"
+//};
+//
+//
+//String fear[2] {
+//  "1x-x-x-x-x-x-x-x-*2x-b-b-b-b-b-b-x-*3x-b-b-b-b-b-b-x-*4x-b-x-b-b-x-b-x-*5x-b-b-b-b-b-b-x-*6x-x-b-b-b-b-x-x-*7x-x-b-b-b-b-x-x-*8x-x-x-x-x-x-x-x-*",
+//  "1x-x-x-x-x-x-x-x-*2x-b-b-b-b-b-b-x-*3x-b-b-b-b-b-b-x-*4x-b-x-b-b-x-b-x-*5x-b-b-b-b-b-b-x-*6x-x-b-b-b-b-x-x-*7x-x-x-x-x-x-x-x-*8x-x-b-b-b-b-x-x-*"
+//};
+//String joy[2] {
+//  "1rg-x-x-rg-x-x-x-rg-*2x-rg-x-x-x-x-rg-x-*3x-x-x-rg-rg-x-x-x-*4rg-x-rg-rg-rg-rg-x-x-*5x-x-rg-rg-rg-rg-x-rg-*6x-x-x-rg-rg-x-x-x-*7x-rg-x-x-x-x-rg-x-*8rg-x-x-x-rg-x-x-rg-*",
+//  "1x-x-x-x-rg-x-x-rg-*2rg-x-x-x-x-x-rg-x-*3x-rg-x-rg-rg-x-x-x-*4x-x-rg-rg-rg-rg-x-rg-*5rg-x-rg-rg-rg-rg-x-x-*6x-x-x-rg-rg-x-x-x-*7x-rg-x-x-x-rg-x-x-*8rg-x-x-rg-x-x-rg-x-*"
+//};
 
 
 
@@ -97,6 +81,7 @@ void setup() {
   }  
 
   startTime = millis();
+
 }
 
 void loop() {
@@ -114,13 +99,22 @@ void loop() {
       }
     }*/
   if (millis() - startTime < (interval * currentFrame)){
-       /* if (emotion == "anger") matrixUpdate(anger[currentFrame - 1][i]);  
-        else if (emotion == "sadness"){*/
+        String whole;
         String chunk = "";
-        for (int g = 0; g < sadness[currentFrame - 1].length(); g ++){
+
+       //if (emotion == "disgust") 
+       whole = sadness[currentFrame - 1];  
+       //  else
+       //if (emotion == "sadness") whole = sadness[currentFrame - 1];
+       //  else if (emotion == "fear")  whole = joy[currentFrame - 1];
+        //else if (emotion == "disgust")  whole = disgust[currentFrame - 1];
+       //else  whole = joy[currentFrame - 1];
+         
+        
+        for (int g = 0; g < whole.length(); g ++){
           
-          if (sadness[currentFrame - 1].charAt(g)!= '*'){
-            chunk += sadness[currentFrame - 1].charAt(g);
+          if (whole.charAt(g)!= '*'){
+            chunk += whole.charAt(g);
           }
           else {
              chunk += "*";
@@ -129,12 +123,7 @@ void loop() {
           }
         }
           
-         /*
-        }
-        else if (emotion == "joy") matrixUpdate(joy[currentFrame - 1][i]); 
-        else if (emotion == "disgust") matrixUpdate(disgust[currentFrame - 1][i]);  
-        else matrixUpdate(fear[currentFrame - 1][i]);  
-        */      
+           
   }
   else {
     if (currentFrame < frames) {
@@ -145,9 +134,7 @@ void loop() {
       startTime = millis();
     }  
  }
-  
-
-  
+ 
   //draw rows through rows
   for (int i = 0; i < 8; i ++){
     registerWrite(*rows[i]);  

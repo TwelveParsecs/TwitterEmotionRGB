@@ -10,13 +10,17 @@ const int dataPin = 11;
 const int latchPin2 = 2;
 const int clockPin2 = 4;
 const int dataPin2 = 3;
-
+const int interval = 200;// >illiseconds between each frame
 unsigned long startTime;
 
+String emotion = "sadness";
+int frames = 2;
+int currentFrame = 1;
 
 String newImage;
 
-String sad1[8] = {
+String sadness[2][8]= {
+  {
     "1x-x-b-b-b-x-x-x-*",
     "2x-b-b-b-b-b-b-x-*",
     "3b-b-b-b-b-b-b-b-*",
@@ -25,19 +29,74 @@ String sad1[8] = {
     "6x-x-b-x-b-x-b-x-*",
     "7x-x-x-gb-x-gb-x-gb-*",
     "8x-x-x-x-b-x-b-x-*"
-  };
+  },
+  {
+    "1x-x-b-b-b-x-x-x-*",
+    "2x-b-b-b-b-b-b-x-*",
+    "3b-b-b-b-b-b-b-b-*",
+    "4b-b-b-b-b-b-b-b-*",
+    "5x-gb-x-b-x-gb-x-x-*",
+    "6x-x-b-x-b-x-b-x-*",
+    "7gb-x-gb-x-gb-x-x-x-*",
+    "8x-b-x-b-x-x-x-x-*"
+   }
+};
 
 
-  
-String sad2[8] = {
-  "1x-x-b-b-b-x-x-x-*",
-  "2x-b-b-b-b-b-b-x-*",
-  "3b-b-b-b-b-b-b-b-*",
-  "4b-b-b-b-b-b-b-b-*",
-  "5x-gb-x-b-x-gb-x-x-*",
-  "6x-x-b-x-b-x-b-x-*",
-  "7gb-x-gb-x-gb-x-x-x-*",
-  "8x-b-x-b-x-x-x-x-*"};
+String sadnessw[2][8]= {
+  {
+    "1x-x-b-b-b-x-x-x-*",
+    "2x-b-b-b-b-b-b-x-*",
+    "3b-b-b-b-b-b-b-b-*",
+    "4b-b-b-b-b-b-b-b-*",
+    "5x-gb-x-b-x-gb-x-x-",
+    "6x-x-b-x-b-x-b-x-*",
+    "7x-x-x-gb-x-gb-x-gb-*",
+    "8x-x-x-x-b-x-b-x-*"
+  },
+  {
+    "1x-x-b-b-b-x-x-x-*",
+    "2x-b-b-b-b-b-b-x-*",
+    "3b-b-b-b-b-b-b-b-*",
+    "4b-b-b-b-b-b-b-b-*",
+    "5x-gb-x-b-x-gb-x-x-*",
+    "6x-x-b-x-b-x-b-x-*",
+    "7gb-x-gb-x-gb-x-x-x-*",
+    "8x-b-x-b-x-x-x-x-*"
+   }
+};
+
+String sadness2[2][8]= {
+  {
+    "1x-x-b-b-b-x-x-x-*",
+    "2x-b-b-b-b-b-b-x-*",
+    "3b-b-b-b-b-b-b-b-*",
+    "4b-b-b-b-b-b-b-b-*",
+    "5x-gb-x-b-x-gb-x-x-",
+    "6x-x-b-x-b-x-b-x-*",
+    "7x-x-x-gb-x-gb-x-gb-*",
+    "8x-x-x-x-b-x-b-x-*"
+  },
+  {
+    "1111111111111111111111",
+    "1111111111111111111111",
+    "1111111111111111111111",
+    "1111111111111111111111",
+    "1111111111111111111111",
+    "1111111111111111111111",
+    "",
+    ""
+  }
+
+};
+
+
+
+
+
+
+
+
 
 
 
@@ -86,25 +145,34 @@ void loop() {
         newImage += inByte;
       }
       else {
-
-
         matrixUpdate(newImage.substring(0,newImage.length()));
         newImage="";
       }
     }*/
-  if (millis() - startTime < 200){
+  if (millis() - startTime < (interval * currentFrame)){
     for (int i = 0; i < 8; i ++){
-      matrixUpdate(sad1[i]);  
-    }
-  }
-  else if (millis() - startTime < 400){
-     for (int i = 0; i < 8; i ++){
-      matrixUpdate(sad2[i]);  
-    }
+
+       /* if (emotion == "anger") matrixUpdate(anger[currentFrame - 1][i]);  
+        else if (emotion == "sadness"){*/
+          matrixUpdate(sadness[currentFrame - 1][i]);
+         /*
+        }
+        else if (emotion == "joy") matrixUpdate(joy[currentFrame - 1][i]); 
+        else if (emotion == "disgust") matrixUpdate(disgust[currentFrame - 1][i]);  
+        else matrixUpdate(fear[currentFrame - 1][i]);  
+        */
+           
+    } 
   }
   else {
-    startTime = millis();
-  }
+    if (currentFrame < frames) {
+      currentFrame += 1;
+    }
+    else {
+      currentFrame = 1;
+      startTime = millis();
+    }  
+ }
   
 
   
@@ -238,11 +306,4 @@ int bitToInteger(int pos){
   //Serial.println("Position :" + String(pos) + "Number :" + String(num));
   return num;
 }
-
-
-
-
-
-
-
 

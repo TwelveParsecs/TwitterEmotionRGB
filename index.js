@@ -33,7 +33,7 @@ var fs = require('fs'),
     PNG = require('pngjs').PNG;
 
 //load images
-loadImage("icons/sad12.png", "anger");
+loadImage("icons/sad11.png", "anger");
 
 //loadImage("disgust2.png", "disgust");
 
@@ -100,10 +100,10 @@ function loadImage(img,emotion){
 	        filterType: 4
 	    }))
 	    .on('parsed', function() {
-
+imageCommand = "";
 	        for (var y = 0; y < this.height; y++) {
 							// Add row number
-							imageCommand = "";
+
 							imageCommand += y+1;
 	            for (var x = 0; x < this.width; x++) {
 	                var idx = (this.width * y + x) << 2;
@@ -135,7 +135,7 @@ function loadImage(img,emotion){
 									imageCommand +="-";
 	            }
 							// Add line ending
-							imageCommand +="*#";
+							imageCommand +="*";
 							switch(emotion){
 								case "anger":
 									angerArray.push(imageCommand);
@@ -153,10 +153,10 @@ function loadImage(img,emotion){
 									sadnessArray.push(imageCommand);
 									break;
 							}
-              console.log(imageCommand);
+
 	        }
 					//Arduino will read number sign as end of serial data.
-
+					console.log(imageCommand);
 
 					//add data to matching array
 

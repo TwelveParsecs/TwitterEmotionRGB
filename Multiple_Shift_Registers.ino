@@ -18,7 +18,7 @@ int frames = 2;
 int currentFrame = 1;
 
 String newImage;
-
+/*
 String sadness[2][8]= {
   {
     "1x-x-b-b-b-x-x-x-*",
@@ -41,54 +41,18 @@ String sadness[2][8]= {
     "8x-b-x-b-x-x-x-x-*"
    }
 };
-
-
-String sadnessw[2][8]= {
-  {
-    "1x-x-b-b-b-x-x-x-*",
-    "2x-b-b-b-b-b-b-x-*",
-    "3b-b-b-b-b-b-b-b-*",
-    "4b-b-b-b-b-b-b-b-*",
-    "5x-gb-x-b-x-gb-x-x-",
-    "6x-x-b-x-b-x-b-x-*",
-    "7x-x-x-gb-x-gb-x-gb-*",
-    "8x-x-x-x-b-x-b-x-*"
-  },
-  {
-    "1x-x-b-b-b-x-x-x-*",
-    "2x-b-b-b-b-b-b-x-*",
-    "3b-b-b-b-b-b-b-b-*",
-    "4b-b-b-b-b-b-b-b-*",
-    "5x-gb-x-b-x-gb-x-x-*",
-    "6x-x-b-x-b-x-b-x-*",
-    "7gb-x-gb-x-gb-x-x-x-*",
-    "8x-b-x-b-x-x-x-x-*"
-   }
+*/
+String sadness[2] {
+  "1x-x-b-b-b-x-x-x-*2x-b-b-b-b-b-b-x-*3b-b-b-b-b-b-b-b-*4b-b-b-b-b-b-b-b-*5x-gb-x-b-x-gb-x-x-*6x-x-b-x-b-x-b-x-*7x-x-x-gb-x-gb-x-gb-*8x-x-x-x-b-x-b-x-*",
+  "1x-x-x-b-b-b-x-x-*2x-b-b-b-b-b-b-x-*3b-b-b-b-b-b-b-b-*4b-b-b-b-b-b-b-b-*5x-x-gb-x-b-x-gb-x-*6x-b-x-b-x-b-x-x-*7gb-x-gb-x-gb-x-x-x-*8x-b-x-b-x-x-x-x-*"
 };
 
-String sadness2[2][8]= {
-  {
-    "1x-x-b-b-b-x-x-x-*",
-    "2x-b-b-b-b-b-b-x-*",
-    "3b-b-b-b-b-b-b-b-*",
-    "4b-b-b-b-b-b-b-b-*",
-    "5x-gb-x-b-x-gb-x-x-",
-    "6x-x-b-x-b-x-b-x-*",
-    "7x-x-x-gb-x-gb-x-gb-*",
-    "8x-x-x-x-b-x-b-x-*"
-  },
-  {
-    "1111111111111111111111",
-    "1111111111111111111111",
-    "1111111111111111111111",
-    "1111111111111111111111",
-    "1111111111111111111111",
-    "1111111111111111111111",
-    "",
-    ""
-  }
 
-};
+
+
+
+
+
 
 
 
@@ -150,19 +114,27 @@ void loop() {
       }
     }*/
   if (millis() - startTime < (interval * currentFrame)){
-    for (int i = 0; i < 8; i ++){
-
        /* if (emotion == "anger") matrixUpdate(anger[currentFrame - 1][i]);  
         else if (emotion == "sadness"){*/
-          matrixUpdate(sadness[currentFrame - 1][i]);
+        String chunk = "";
+        for (int g = 0; g < sadness[currentFrame - 1].length(); g ++){
+          
+          if (sadness[currentFrame - 1].charAt(g)!= '*'){
+            chunk += sadness[currentFrame - 1].charAt(g);
+          }
+          else {
+             chunk += "*";
+            matrixUpdate(chunk);
+            chunk = "";
+          }
+        }
+          
          /*
         }
         else if (emotion == "joy") matrixUpdate(joy[currentFrame - 1][i]); 
         else if (emotion == "disgust") matrixUpdate(disgust[currentFrame - 1][i]);  
         else matrixUpdate(fear[currentFrame - 1][i]);  
-        */
-           
-    } 
+        */      
   }
   else {
     if (currentFrame < frames) {

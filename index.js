@@ -33,12 +33,12 @@ var fs = require('fs'),
     PNG = require('pngjs').PNG;
 
 //load images
-loadImage("icons/disgust2.png", "anger");
+//loadImage("icons/disgust2.png", "anger");
 
 //loadImage("disgust2.png", "disgust");
 
 //Get emotion from Twitter feed
-//getTwitter();
+getTwitter();
 
 
 myPort.on("open", function () {
@@ -57,8 +57,7 @@ myPort.on("open", function () {
 
 				//check that an emotion has been set
 				//console.log("started looping");
-				emotion = "anger"; //REMOVE LATER//
-				//console.log(emotion);
+				console.log(emotion);
 
 				if (emotion != ""){
 					//display frames from current emotion
@@ -71,13 +70,13 @@ myPort.on("open", function () {
 					//if there are no more frames, restart
 					if (count >= imageArray.length) count = 0;
 
-					sendToSerial(imageArray[count]);
+					sendToSerial(emotion+#);
 					count +=1;
 					timeElapsed += 600;
 
 					//if 2 minutes have passed, check Twitter again
 					if (timeElapsed > 120000){
-							//getTwitter();
+							getTwitter();
 							timeElapsed = 0;
 					}
 				}
